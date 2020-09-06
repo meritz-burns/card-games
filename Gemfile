@@ -9,6 +9,7 @@ ruby "2.7.1"
 
 gem "autoprefixer-rails"
 gem "bootsnap", require: false
+gem 'graphql'
 gem "pg"
 gem "puma"
 gem "rack-canonical-host"

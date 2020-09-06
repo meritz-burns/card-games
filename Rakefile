@@ -1,4 +1,5 @@
 require_relative 'config/application'
+require 'graphql/rake_task'
 
 Rails.application.load_tasks
 
@@ -13,3 +14,5 @@ if defined? RSpec
 end
 
 task default: "bundle:audit"
+
+GraphQL::RakeTask.new(schema_name: "CntrlSchema")
