@@ -6,5 +6,13 @@ module Types
     DESC
 
     possible_types MaskedCard, Card
+
+    def self.from_player_card(player, card, current_player:)
+      if player == current_player
+        Card.from_card(card)
+      else
+        MaskedCard.from_card(card)
+      end
+    end
   end
 end

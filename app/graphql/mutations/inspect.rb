@@ -7,8 +7,11 @@ module Mutations
     argument :connection_id, String, required: true
     type Types::InspectResult
 
-    def resolve
-      raise "not yet implemented"
+    def resolve(connection_id:)
+      player = Player.find_by!(connection_id: connection_id)
+      game = player.game
+
+      Types::InspectResult.from_cards(game.discard)
     end
   end
 end

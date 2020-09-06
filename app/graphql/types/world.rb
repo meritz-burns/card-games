@@ -10,5 +10,15 @@ module Types
       description: "The card visible on top of the discard pile, if any."
     field :players, [Player], null: false,
       description: "Everyone who is connected to this game, be they player or spectator."
+
+    def self.from_game(game, player:)
+      {
+        deck_size: game.deck.size,
+        top_of_discard_pile: game.discard.first,
+        players: game.players.map do |player|
+          Player.from_player(player, current_player: player)
+        end,
+      }
+    end
   end
 end

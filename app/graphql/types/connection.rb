@@ -11,5 +11,13 @@ module Types
       description: "Public details about this player."
     field :world, World, null: false,
       description: "The game state."
+
+    def self.from_game(game, player:)
+      {
+        id: player.connection_id,
+        player: player,
+        world: World.from_game(game, player: player),
+      }
+    end
   end
 end

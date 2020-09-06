@@ -5,5 +5,9 @@ module Types
     DESC
 
     field :ignored, String, null: true
+
+    def self.from_card(card)
+      { ignored: "" }
+    end
   end
 end

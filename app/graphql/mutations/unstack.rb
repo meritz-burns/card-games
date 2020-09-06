@@ -9,7 +9,14 @@ module Mutations
     type Types::ActionPayload
 
     def resolve
-      raise "not yet implemented"
+      movement = CardMovement.from_connection(connection_id)
+      result = movement.move_card(card_id, from: :hand, to: :deck_bottom)
+
+      if result.valid?
+        Types::ActionPayload.from_game(result.payload, player: movement.player)
+      else
+        Types::ActionPayload.from_errors(result.errors)
+      end
     end
   end
 end

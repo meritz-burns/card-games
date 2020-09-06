@@ -11,8 +11,15 @@ module Mutations
     argument :game_id, String, required: true
     type Types::ConnectionPayload
 
-    def resolve
-      raise "not yet implemented"
+    def resolve(game_id:)
+      result = Game.join(game_id)
+
+      if result.valid?
+        player, game = result.payload
+        Types::ConnectionPayload.from_game(game, player: player)
+      else
+        Types::ConnectionPayload.from_errors(result.errors, game_id: game_id)
+      end
     end
   end
 end

@@ -8,5 +8,12 @@ module Types
       description: "The game they attempted to connect to."
     field :errors, [Error], null: false,
       description: "Details of the connection failure."
+
+    def self.from_errors(errors, game_id:)
+      {
+        game_id: game_id,
+        errors: errors.map { |error| Error.from_error(error) },
+      }
+    end
   end
 end

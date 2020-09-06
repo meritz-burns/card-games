@@ -1,76 +1,103 @@
 ##
 # Represents a single game being played. Almost guaranteed to be the god class.
 class Game < ApplicationRecord
-  STATES = [
-    STATE_CREATED = "created".freeze,
-    STATE_ONGOING = "ongoing".freeze,
-    STATE_OVER = "over".freeze
-  ].freeze
+  enum state: {
+    :created => 0,
+    :waiting => 1,
+    :ongoing => 2,
+    :over => 3,
+  }
+
+  before_create :set_up_game
 
   ##
   # Games that can be joined, either as a spectator or player.
   #
   # @return [List<Game>]
   def self.joinable
-    where('state <> ?', STATE_OVER)
+    where('state <> ?', states[:over])
   end
 
-  ### TODO this is now no longer used:
   ##
   # This method helps a user join an existing game, either as the second player
-  # or as a spectator. It takes a form object that it uses to communicate
-  # errors.
+  # or as a spectator.
   #
-  # - If the game does not exist, error, return nil.
-  # - If the game is OVER, error, return nil.
-  # - If the game is CREATED, add player and move to ONGOING, return Game.
-  # - If the game is ONGOING, add spectator, return Game.
+  # - If the game does not exist, error, return failure.
+  # - If the game is OVER, error, return failure.
+  # - If the game is CREATED, add player, move to WAITING, return success.
+  # - If the game is WAITING, add player, move to ONGOING, return success.
+  # - If the game is ONGOING, add spectator, return success.
   #
-  # @param form [#game_id, ActiveModel::Model] the form object to communicate with
-  # @return [Game, nil] a Game that has been joined, or nil
-  def self.join(form)
+  # @param game_id [String] the game to join
+  # @return [Result::Failure, Result::Success] whether it worked, with the new
+  #   player and game in the success payload.
+  def self.join(game_id)
     ### TODO lock and txn
-    game = find(form.game_id)
+    game = find(game_id)
 
     if game
       case game.state
-      when STATE_CREATED
-        if game.add_player
-          game
+      when states[:created]
+        if player = game.add_player!("Player 1")
+          game.update!(state: :waiting)
+          Result::Success.new([player, game])
         else
-          form.errors.merge!(game.errors)
-          nil
+          Result::Failure.new(errors: game.errors)
         end
-      when STATE_ONGOING
-        if game.add_spectator
-          game
+      when states[:waiting]
+        if player = game.add_player!("Player 2")
+          game.update!(state: :ongoing)
+          Result::Success.new([player, game])
         else
-          form.errors.merge!(game.errors)
-          nil
+          Result::Failure.new(errors: game.errors)
         end
-      when STATE_OVER
-        form.errors.add(:game_id, :over) ### TODO
-        nil
+      when states[:ongoing]
+        if player = game.add_spectator
+          Result::Success.new([player, game])
+        else
+          Result::Failure.new(errors: game.errors)
+        end
+      when states[:over]
+        Result::Failure.new(:game_over) ### TODO i18n
       end
     else
-      form.errors.add(:game_id, :missing) ### TODO
-      nil
+      Result::Failure.new(:game_missing) ### TODO i18n
     end
   end
 
   ##
   # Creates a new player and connects them to this game.
   #
-  # @return [Boolean] Whether the player was added.
-  def add_player
-    TODO
+  # @return [Player] The saved player.
+  def add_player!(name)
+    player = Player.create!(game: self, name: name)
+
+    ### TODO draw five cards
+
+    player
   end
 
   ##
   # Creates a new spectator and connects them to this game.
   #
-  # @return [Boolean] Whether the spectator was added.
-  def add_spectator
-    TODO
+  # @return [Player] The saved player.
+  def add_spectator!
+    Player.create!(game: self, name: "Spectator")
+  end
+
+  def deck
+    deck_ids.map { |card_id| Card.find(card_id) }
+  end
+
+  def discard
+    discard_ids.map { |card_id| Card.find(card_id) }
+  end
+
+  private
+
+  def set_up_game
+    self.deck_ids = (Card.names * 4).shuffle.map.with_index do |card_name, idx|
+      "#{idx}_#{card_name}"
+    end
   end
 end

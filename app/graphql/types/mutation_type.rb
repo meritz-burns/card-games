@@ -12,7 +12,6 @@ module Types
     field :bounce, mutation: Mutations::Bounce
     field :retrieve, mutation: Mutations::Retrieve
     field :transfer, mutation: Mutations::Transfer
-    field :pass, mutation: Mutations::Pass
     field :disconnect, mutation: Mutations::Disconnect
     field :win, mutation: Mutations::Win
   end
