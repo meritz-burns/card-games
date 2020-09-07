@@ -13,7 +13,7 @@ class Card < Struct.new(:name, :type, :charge, :ability, :id)
   private
 
   CARDS = {
-    "Rift"Card.new(
+    "Rift" => Card.new(
       "Rift",
       :silver,
       1,

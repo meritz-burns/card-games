@@ -6,4 +6,6 @@ Rails.application.routes.draw do
 
   resources :games, only: [:new, :create, :index, :show]
   resources :joins, only: [:new, :create]
+
+  root to: 'games#index'
 end

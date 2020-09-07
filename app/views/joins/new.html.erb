@@ -1,5 +1,5 @@
 <%= form_for @game, url: joins_path do |form| %>
   <%= form.label :id %>
   <%= form.text_field :id %>
-  <%= form.submit %>
+  <%= form.submit t(".join_button") %>
 <% end %>

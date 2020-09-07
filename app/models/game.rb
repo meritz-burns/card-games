@@ -37,27 +37,27 @@ class Game < ApplicationRecord
 
     if game
       case game.state
-      when states[:created]
+      when "created"
         if player = game.add_player!("Player 1")
           game.update!(state: :waiting)
           Result::Success.new([player, game])
         else
           Result::Failure.new(errors: game.errors)
         end
-      when states[:waiting]
+      when "waiting"
         if player = game.add_player!("Player 2")
           game.update!(state: :ongoing)
           Result::Success.new([player, game])
         else
           Result::Failure.new(errors: game.errors)
         end
-      when states[:ongoing]
+      when "ongoing"
         if player = game.add_spectator
           Result::Success.new([player, game])
         else
           Result::Failure.new(errors: game.errors)
         end
-      when states[:over]
+      when "over"
         Result::Failure.new(:game_over) ### TODO i18n
       end
     else

@@ -1,3 +1,6 @@
+<p><%= link_to t(".start"), new_game_path %></p>
+<p><%= link_to t(".join"), new_join_path %></p>
+
 <ul>
   <% @games.each do |game| %>
     <li><%= link_to "Game #{game.id} (#{game.state})", game %><li>

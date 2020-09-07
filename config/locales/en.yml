@@ -15,5 +15,12 @@ en:
       short:
         "%B %d"
 
-  titles:
-    application: Cntrl
+  games:
+    index:
+      start: "Start a new game"
+      join: "Join a game by number"
+    new:
+      start_button: "Start"
+  joins:
+    new:
+      join_button: "Join"
