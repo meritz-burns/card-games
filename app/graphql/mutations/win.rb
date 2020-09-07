@@ -12,6 +12,7 @@ module Mutations
       game = player.game
 
       if game.update(state: Game.states[:over])
+        action(:victory, movement.player)
         Types::ActionPayload.from_game(game, player: player)
       else
         Types::ActionPayload.from_errors(game.errors)

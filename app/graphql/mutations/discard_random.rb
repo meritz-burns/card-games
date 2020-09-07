@@ -16,11 +16,13 @@ module Mutations
         result = movement.move_card(card_id, from: :hand, to: :discard)
 
         if result.valid?
+          action(:discard, player, card_id)
           Types::ActionPayload.from_game(result.payload, player: player)
         else
           Types::ActionPayload.from_errors(result.errors)
         end
       else
+        action(:discard, player)
         Types::ActionPayload.from_game(movement.game, player: player)
       end
     end

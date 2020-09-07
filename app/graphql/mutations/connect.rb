@@ -16,6 +16,7 @@ module Mutations
 
       if result.valid?
         player, game = result.payload
+        action(:connect, player)
         Types::ConnectionPayload.from_game(game, player: player)
       else
         Types::ConnectionPayload.from_errors(result.errors, game_id: game_id)

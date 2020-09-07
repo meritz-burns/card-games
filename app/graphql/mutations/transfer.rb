@@ -13,6 +13,7 @@ module Mutations
       result = movement.move_card(card_id, from: :installed, to: :installed)
 
       if result.valid?
+        action(:transfer, movement.player, card_id)
         Types::ActionPayload.from_game(result.payload, player: movement.player)
       else
         Types::ActionPayload.from_errors(result.errors)

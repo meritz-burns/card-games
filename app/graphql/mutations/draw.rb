@@ -15,7 +15,8 @@ module Mutations
         result = movement.move_card(card_id, from: :deck, to: :hand)
 
         if result.valid?
-          Types::ActionPayload.from_game(result.payload, player: player)
+          action(:draw, movement.player, card_id)
+          Types::ActionPayload.from_game(result.payload, player: movement.player)
         else
           Types::ActionPayload.from_errors(result.errors)
         end
