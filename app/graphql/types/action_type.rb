@@ -6,8 +6,8 @@ module Types
       An action that another user took in the game.
     DESC
 
-    field :player, Player, "the player who took the action", null: false
-    field :world, World, "the game state", null: false
+    field :player, PlayerType, "the player who took the action", null: false
+    field :world, WorldType, "the game state", null: false
 
     orphan_types ActionDestroyType,
       ActionDiscardType,

@@ -1,5 +1,5 @@
 module Types
-  class CardMetal < BaseEnum
+  class CardMetalType < BaseEnum
     description <<~DESC
       The metal that our fuel cell is made of.
     DESC

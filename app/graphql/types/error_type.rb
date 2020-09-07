@@ -1,5 +1,5 @@
 module Types
-  class Error < BaseObject
+  class ErrorType < BaseObject
     description <<~DESC
       An error occurred.
     DESC

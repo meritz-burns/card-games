@@ -6,10 +6,10 @@ module Types
       the player discarded a card
     DESC
 
-    field :card, Card, "the card that was discarded", null: false
+    field :card, CardType, "the card that was discarded", null: false
 
     def self.from_action(performing_player, card_id, current_player:)
-      world = World.game(current_player.game, player: current_player)
+      world = WorldType.from_game(current_player.game, player: current_player)
 
       {
         player: performing_player,

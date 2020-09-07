@@ -4,21 +4,21 @@ module Types
       What happened when the user tried to do something.
     DESC
 
-    field :errors, [Error], null: false,
+    field :errors, [ErrorType], null: false,
       description: "we encountered an error"
-    field :world, World, null: true,
+    field :world, WorldType, null: true,
       description: "the updated gamestate, or null if there was an error"
 
     def self.from_game(game, player:)
       {
         errors: [],
-        world: World.from_game(game, player: player),
+        world: WorldType.from_game(game, player: player),
       }
     end
 
     def self.from_errors(errors)
       {
-        errors: errors.map { |error| Error.from_error(error) },
+        errors: errors.map { |error| ErrorType.from_error(error) },
         world: nil,
       }
     end

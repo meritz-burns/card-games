@@ -1,5 +1,5 @@
 module Types
-  class Card < BaseObject
+  class CardType < BaseObject
     description <<~DESC
       A fuel cell.
     DESC
@@ -8,7 +8,7 @@ module Types
       description: "an identifier for this specific fuel cell"
     field :charge, Integer, null: false,
       description: "how many fuel cells to add to the time machine's charge"
-    field :type, CardMetal, null: false,
+    field :type, CardMetalType, null: false,
       description: "whether it is a silver or bronze fuel cell"
     field :name, String, null: false,
       description: "human-readable card name"

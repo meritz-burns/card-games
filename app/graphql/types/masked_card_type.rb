@@ -1,5 +1,5 @@
 module Types
-  class MaskedCard < BaseObject
+  class MaskedCardType < BaseObject
     description <<~DESC
       The back of a card. We have no idea what's on front.
     DESC
