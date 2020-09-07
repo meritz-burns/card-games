@@ -24,7 +24,7 @@ module Types
             current_player: current_player,
           )
         end,
-        board: player.installed.map { |card| CardType.from_card(card) }
+        board: player.board.map { |card| CardType.from_card(card) }
       }
     end
   end

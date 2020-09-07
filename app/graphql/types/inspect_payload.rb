@@ -10,7 +10,10 @@ module Types
       description: "The cards in the discard pile, sorted with the most recent first."
 
     def self.from_cards(cards)
-      cards.map { |card| CardType.from_card(card) }
+      {
+        errors: [],
+        cards: cards.map { |card| CardType.from_card(card) }
+      }
     end
   end
 end

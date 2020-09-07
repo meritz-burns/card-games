@@ -10,6 +10,8 @@ class Game < ApplicationRecord
 
   before_create :set_up_game
 
+  has_many :players
+
   ##
   # Games that can be joined, either as a spectator or player.
   #

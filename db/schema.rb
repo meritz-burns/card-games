@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_06_040511) do
+ActiveRecord::Schema.define(version: 2020_09_07_052608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,18 @@ ActiveRecord::Schema.define(version: 2020_09_06_040511) do
     t.string "deck_ids", default: [], null: false, array: true
     t.string "discard_ids", default: [], null: false, array: true
     t.index ["state"], name: "index_games_on_state"
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "game_id", null: false
+    t.string "name", null: false
+    t.string "connection_secret", null: false
+    t.string "hand_ids", default: [], null: false, array: true
+    t.string "board_ids", default: [], null: false, array: true
+    t.index ["connection_secret"], name: "index_players_on_connection_secret"
+    t.index ["game_id"], name: "index_players_on_game_id"
   end
 
 end

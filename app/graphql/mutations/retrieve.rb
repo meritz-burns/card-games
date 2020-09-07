@@ -10,7 +10,7 @@ module Mutations
 
     def resolve(connection_id:, card_id:)
       movement = CardMovement.from_connection(connection_id)
-      result = movement.move_card(card_id, from: :discard, to: :hand)
+      result = movement.move(card_id, from: :discard, to: :hand)
 
       if result.valid?
         action(:retrieve, movement.player, card_id)

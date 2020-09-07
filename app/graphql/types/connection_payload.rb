@@ -6,6 +6,14 @@ module Types
 
     possible_types ConnectionFailureType, ConnectionType
 
+    def self.resolve_type(object, _context)
+      if object.has_key?(:errors)
+        ConnectionFailureType
+      elsif object.has_key?(:id)
+        ConnectionType
+      end
+    end
+
     def self.from_game(game, player:)
       ConnectionType.from_game(game, player: player)
     end

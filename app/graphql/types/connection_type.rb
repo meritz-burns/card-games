@@ -14,8 +14,8 @@ module Types
 
     def self.from_game(game, player:)
       {
-        id: player.connection_id,
-        player: player,
+        id: player.connection_secret,
+        player: PlayerType.from_player(player, current_player: player),
         world: WorldType.from_game(game, player: player),
       }
     end

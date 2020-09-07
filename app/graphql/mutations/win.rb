@@ -8,11 +8,11 @@ module Mutations
     type Types::ActionPayload
 
     def resolve(connection_id:)
-      player = Player.find_by!(connection_id: connection_id)
+      player = Player.find_by!(connection_secret: connection_id)
       game = player.game
 
       if game.update(state: Game.states[:over])
-        action(:victory, movement.player)
+        action(:victory, player)
         Types::ActionPayload.from_game(game, player: player)
       else
         Types::ActionPayload.from_errors(game.errors)

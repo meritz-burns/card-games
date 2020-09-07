@@ -8,7 +8,7 @@ module Mutations
     type Types::InspectPayload
 
     def resolve(connection_id:)
-      player = Player.find_by!(connection_id: connection_id)
+      player = Player.find_by!(connection_secret: connection_id)
       game = player.game
 
       Types::InspectPayload.from_cards(game.discard)

@@ -12,10 +12,10 @@ class CardMovement
   attr_reader :game, :player
 
   ##
-  # @param connection_id [String] The player's secret identifier.
+  # @param connection_secret [String] The player's secret identifier.
   # @return [CardMovement]
-  def self.from_connection(connection_id)
-    player = Player.find_by!(connection_id: connection_id)
+  def self.from_connection(connection_secret)
+    player = Player.find_by!(connection_secret: connection_secret)
     game = player.game
 
     new(game: game, player: player)
@@ -41,10 +41,10 @@ class CardMovement
     when :deck
       case to
       when :hand
-        if deck_ids.delete(card_id)
+        if game.deck_ids.delete(card_id)
           player.hand_ids.append(card_id)
 
-          transaction do
+          ActiveRecord::Base.transaction do
             game.save!
             player.save!
           end
@@ -60,7 +60,7 @@ class CardMovement
         if game.discard_ids.delete(card_id)
           player.hand_ids.append(card_id)
 
-          transaction do
+          ActiveRecord::Base.transaction do
             game.save!
             player.save!
           end
@@ -76,7 +76,7 @@ class CardMovement
         if player.hand_ids.delete(card_id)
           game.deck_ids.prepend(card_id)
 
-          transaction do
+          ActiveRecord::Base.transaction do
             game.save!
             player.save!
           end
@@ -89,7 +89,7 @@ class CardMovement
         if player.hand_ids.delete(card_id)
           game.deck_ids.append(card_id)
 
-          transaction do
+          ActiveRecord::Base.transaction do
             game.save!
             player.save!
           end
@@ -102,7 +102,7 @@ class CardMovement
         if player.hand_ids.delete(card_id)
           game.discard_ids.prepend(card_id)
 
-          transaction do
+          ActiveRecord::Base.transaction do
             game.save!
             player.save!
           end
@@ -135,7 +135,7 @@ class CardMovement
           if source_player.board_ids.delete(card_id)
             game.discard_ids.prepend(card_id)
 
-            transaction do
+            ActiveRecord::Base.transaction do
               source_player.save!
               game.save!
             end
@@ -156,7 +156,7 @@ class CardMovement
           if source_player.board_ids.delete(card_id)
             player.hand_ids.append(card_id)
 
-            transaction do
+            ActiveRecord::Base.transaction do
               source_player.save!
               player.save!
             end
@@ -177,7 +177,7 @@ class CardMovement
           if source_player.board_ids.delete(card_id)
             player.board_ids.append(card_id)
 
-            transaction do
+            ActiveRecord::Base.transaction do
               source_player.save!
               player.save!
             end

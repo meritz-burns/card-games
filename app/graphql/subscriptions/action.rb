@@ -12,7 +12,7 @@ module Subscriptions
 
     def update(connection_id:)
       action_name, player, card_id = object
-      current_player = Player.find_by!(connection_id: connection_id)
+      current_player = Player.find_by!(connection_secret: connection_id)
 
       if player == current_player || player.game_id != current_player.game_id
         :no_update

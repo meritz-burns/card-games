@@ -10,7 +10,7 @@ module Mutations
 
     def resolve(connection_id:, card_id:)
       movement = CardMovement.from_connection(connection_id)
-      result = movement.move_card(card_id, from: :installed, to: :installed)
+      result = movement.move(card_id, from: :installed, to: :installed)
 
       if result.valid?
         action(:transfer, movement.player, card_id)

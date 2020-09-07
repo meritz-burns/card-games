@@ -12,7 +12,7 @@ module Mutations
       card_id = movement.game.deck_ids.first
 
       if card_id
-        result = movement.move_card(card_id, from: :deck, to: :hand)
+        result = movement.move(card_id, from: :deck, to: :hand)
 
         if result.valid?
           action(:draw, movement.player, card_id)

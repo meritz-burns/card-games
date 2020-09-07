@@ -13,7 +13,7 @@ module Mutations
       card_id = player.hand_ids.sample
 
       if card_id
-        result = movement.move_card(card_id, from: :hand, to: :discard)
+        result = movement.move(card_id, from: :hand, to: :discard)
 
         if result.valid?
           action(:discard, player, card_id)
