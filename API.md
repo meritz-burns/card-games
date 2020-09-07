@@ -79,7 +79,6 @@ video. these actions are the nuts and bolts.
 > mutation bounce(connectionId: String!, cardId: String!) : ActionPayload // card from board -> hand
 > mutation retrieve(connectionId: String!, cardId: String!) : ActionPayload // card from discard -> hand
 > mutation transfer(connectionId: String!, cardId: String!) : ActionPayload // installed card -> board
-> mutation pass(connectionId: String!) : ActionPayload // skip your turn
 > mutation disconnect(connectionId: String!) : ActionPayload // if a player, forfeit
 > mutation win(connectionId: String!) : ActionPayload // end the game, winning
 > type InspectPayload {
@@ -97,27 +96,22 @@ in order to make a seamless game, we use a GraphQL subscription. the client is
 expected to track state based on this, but also every action mutation returns a
 World.
 
-> subscription actions(connectionId: String!) : Turn
-> type Turn {
->   turn {
->     action: Action!
->   }
-> }
+> subscription actions(connectionId: String!) : Action
 > interface Action {
 >     player: Player!
+>     world: World!
 > }
-> type Destroy implements Action { card: Card! }
-> type Discard implements Action { card: Card! }
-> type Stack implements Action // move card from hand to top of deck
-> type Unstack implements Action {} // move card from hand to bottom of deck
-> type Draw implements Action // implies a decremented deck size
-> type Install implements Action { card: Card! }
-> type Bounce implements Action { card: Card! } // installed card -> hand
-> type Retrieve implements Action // discard -> hand
-> type Transfer implements Action { // installed -> installed
+> type DestroyAction implements Action { card: Card! }
+> type DiscardAction implements Action { card: Card! }
+> type StackAction implements Action // move card from hand to top of deck
+> type UnstackAction implements Action // move card from hand to bottom of deck
+> type DrawAction implements Action // implies a decremented deck size
+> type InstallAction implements Action { card: Card! }
+> type BounceAction implements Action { card: Card! } // installed card -> hand
+> type RetrieveAction implements Action // discard -> hand
+> type TransferAction implements Action { // installed -> installed
 >   targetPlayer: Player!
 >   card: Card!
 > }
-> type Pass implements Action
-> type Connect implements Action // a user connects
-> type Victory implements Action // game over
+> type ConnectAction implements Action // a user connects
+> type VictoryAction implements Action // game over
