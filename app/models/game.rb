@@ -44,26 +44,26 @@ class Game < ApplicationRecord
           game.update!(state: :waiting)
           Result::Success.new([player, game])
         else
-          Result::Failure.new(errors: game.errors)
+          Result::Failure.model(game)
         end
       when "waiting"
         if player = game.add_player!("Player 2")
           game.update!(state: :ongoing)
           Result::Success.new([player, game])
         else
-          Result::Failure.new(errors: game.errors)
+          Result::Failure.model(game)
         end
       when "ongoing"
-        if player = game.add_spectator
+        if player = game.add_spectator!
           Result::Success.new([player, game])
         else
-          Result::Failure.new(errors: game.errors)
+          Result::Failure.model(game)
         end
       when "over"
-        Result::Failure.new(:game_over) ### TODO i18n
+        Result::Failure.specific(game, :game, :over)
       end
     else
-      Result::Failure.new(:game_missing) ### TODO i18n
+      Result::Failure.specific(game, :game, :missing)
     end
   end
 

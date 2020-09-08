@@ -26,7 +26,7 @@ module Mutations
         {
           errors: [
             {
-              message: I18n.t("mutations.draw.empty_deck"), ### TODO i18n
+              message: I18n.t("errors.attributes.deck.empty"),
               path: [],
             }
           ],

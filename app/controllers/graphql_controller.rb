@@ -1,4 +1,5 @@
 class GraphqlController < ApplicationController
+  skip_before_action :verify_authenticity_token
   rescue_from StandardError, with: :handle_exception
 
   def execute

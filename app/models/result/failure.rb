@@ -2,16 +2,24 @@ module Result
   class Failure
     extend ActiveModel::Naming
 
-    def initialize(msg_key = nil, errors: nil)
+    attr_reader :errors
+
+    def self.model(model)
+      new(base).tap do |obj|
+        obj.errors.merge(model.errors)
+      end
+    end
+
+    def self.specific(value, key, msg)
+      new(value).tap do |obj|
+        obj.errors.add(key, msg)
+      end
+    end
+
+    # @no-doc
+    def initialize(value)
       @errors = ActiveModel::Errors.new(self)
-
-      if msg_key
-        errors.add(:base, msg_key)
-      end
-
-      if errors.present?
-        @errors.merge(errors)
-      end
+      @value = value
     end
 
     def valid?
@@ -19,7 +27,7 @@ module Result
     end
 
     def read_attribute_for_validation(attr)
-      send(attr)
+      @value
     end
 
     def self.human_attribute_name(attr, options = {})

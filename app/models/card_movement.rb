@@ -51,7 +51,7 @@ class CardMovement
 
           Result::Success.new(game)
         else
-          Result::Failure.new(:card_not_in_deck) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_in_deck)
         end
       end
     when :discard
@@ -67,7 +67,7 @@ class CardMovement
 
           Result::Success.new(game)
         else
-          Result::Failure.new(:card_not_in_discard) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_in_discard)
         end
       end
     when :hand
@@ -83,7 +83,7 @@ class CardMovement
 
           Result::Success.new(game)
         else
-          Result::Failure.new(:card_not_in_hand) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_in_hand)
         end
       when :deck_bottom
         if player.hand_ids.delete(card_id)
@@ -96,7 +96,7 @@ class CardMovement
 
           Result::Success.new(game)
         else
-          Result::Failure.new(:card_not_in_hand) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_in_hand)
         end
       when :discard
         if player.hand_ids.delete(card_id)
@@ -109,7 +109,7 @@ class CardMovement
 
           Result::Success.new(game)
         else
-          Result::Failure.new(:card_not_in_hand) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_in_hand)
         end
       when :installed
         if player.hand_ids.delete(card_id)
@@ -119,7 +119,7 @@ class CardMovement
 
           Result::Success.new(game)
         else
-          Result::Failure.new(:card_not_in_hand) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_in_hand)
         end
       end
     when :installed
@@ -130,7 +130,7 @@ class CardMovement
         end
 
         if source_player.nil?
-          Result::Failure.new(:card_not_installed) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_installed)
         else
           if source_player.board_ids.delete(card_id)
             game.discard_ids.prepend(card_id)
@@ -142,7 +142,7 @@ class CardMovement
 
             Result::Success.new(game)
           else
-            Result::Failure.new(:card_not_installed) ### TODO i18n
+            Result::Failure.specific(card_id, :card, :not_installed)
           end
         end
       when :hand
@@ -151,7 +151,7 @@ class CardMovement
         end
 
         if source_player.nil?
-          Result::Failure.new(:card_not_installed) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_installed)
         else
           if source_player.board_ids.delete(card_id)
             player.hand_ids.append(card_id)
@@ -163,7 +163,7 @@ class CardMovement
 
             Result::Success.new(game)
           else
-            Result::Failure.new(:card_not_installed)
+            Result::Failure.specific(card_id, :card, :not_installed)
           end
         end
       when :installed
@@ -172,7 +172,7 @@ class CardMovement
         end
 
         if source_player.nil?
-          Result::Failure.new(:card_not_installed) ### TODO i18n
+          Result::Failure.specific(card_id, :card, :not_installed)
         else
           if source_player.board_ids.delete(card_id)
             player.board_ids.append(card_id)
@@ -184,7 +184,7 @@ class CardMovement
 
             Result::Success.new(game)
           else
-            Result::Failure.new(:card_not_installed)
+            Result::Failure.specific(card_id, :card, :not_installed)
           end
         end
       end

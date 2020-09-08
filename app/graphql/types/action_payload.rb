@@ -18,7 +18,7 @@ module Types
 
     def self.from_errors(errors)
       {
-        errors: errors.map { |error| ErrorType.from_error(error) },
+        errors: ErrorType.from_errors(errors),
         world: nil,
       }
     end

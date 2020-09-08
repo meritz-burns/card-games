@@ -9,11 +9,13 @@ module Types
     field :path, [String], null: false,
       description: "The input value at fault."
 
-    def self.from_error(error)
-      {
-        message: error.message,
-        path: [], ### TODO not sure what to do here.
-      }
+    def self.from_errors(errors)
+      errors.map do |path, message|
+        {
+          message: message,
+          path: [path.to_s],
+        }
+      end
     end
   end
 end

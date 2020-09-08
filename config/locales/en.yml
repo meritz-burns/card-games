@@ -15,6 +15,19 @@ en:
       short:
         "%B %d"
 
+  errors:
+    attributes:
+      game:
+        over: "is finished"
+        missing: "cannot be found"
+      card:
+        not_in_discard: "is not in the discard pile"
+        not_in_hand: "is not in any player's hand"
+        not_installed: "is not installed on any player's board"
+        not_in_deck: "is not in the deck"
+      deck:
+        empty: "is empty"
+
   games:
     index:
       start: "Start a new game"

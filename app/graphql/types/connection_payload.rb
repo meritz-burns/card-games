@@ -19,7 +19,7 @@ module Types
     end
 
     def self.from_errors(errors, game_id:)
-      ConnectionFailureType.from_errors(result.errors, game_id: game_id)
+      ConnectionFailureType.from_errors(errors, game_id: game_id)
     end
   end
 end
