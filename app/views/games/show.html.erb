@@ -1,1 +1,108 @@
-~~~ magic ~~~
+<%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement) do |form| %>
+  <section id="pile-player-hand-<%= @player.id %>">
+    <h2>
+      <%= form.radio_button :dest_pile, "pile-player-hand-#{@player.id}" %>
+      <%= form.label :dest_pile, value: "pile-player-hand-#{@player.id}" do %>
+        Your hand
+      <% end %>
+    </h2>
+
+    <ul>
+      <%= render @player.hand,
+        form: form,
+        pile: "pile-player-hand-#{@player.id}"
+      %>
+    </ul>
+  </section>
+
+  <section id="pile-player-board-<%= @player.id %>">
+    <h2>
+      <%= form.radio_button :dest_pile, "pile-player-board-#{@player.id}" %>
+      <%= form.label :dest_pile, value: "pile-player-board-#{@player.id}" do %>
+        Your board
+      <% end %>
+    </h2>
+
+    <ul>
+      <%= render @player.board,
+        form: form,
+        pile: "pile-player-board-#{@player.id}"
+      %>
+    </ul>
+  </section>
+
+  <section id="pile-deck">
+    <h2>
+      <%= form.radio_button :dest_pile, "pile-deck" %>
+      <%= form.label :dest_pile, value: "pile-deck" do %>
+        Deck
+      <% end %>
+    </h2>
+
+    <p>Size: 
+      <%= form.radio_button :source, "#{@game.deck.first.id}-in-pile-deck" %>
+      <%= form.label :source, value: "#{@game.deck.first.id}-in-pile-deck" do -%>
+        <%= @game.deck.size -%>
+      <% end -%>.
+    </p>
+
+    (<%= form.radio_button :dest_pile, "pile-deck-bottom" -%>
+    <%= form.label :dest_pile, value: "pile-deck-bottom" do -%>
+      Bottom of the deck
+    <% end -%>.)
+  </section>
+
+  <section id="pile-discard">
+    <h2>
+      <%= form.radio_button :dest_pile, "pile-discard" %>
+      <%= form.label :dest_pile, value: "pile-discard" do %>
+        Discard
+      <% end %>
+    </h2>
+
+    <ul>
+      <%= render @game.discard.first,
+        form: form,
+        pile: "pile-discard"
+      %>
+    </ul>
+  </section>
+
+  <% @player.opponents.each do |opponent| %>
+    <section id="pile-player-hand-<%= opponent.id %>">
+      <h2>
+        <%= form.radio_button :dest_pile, "pile-player-hand-#{opponent.id}" %>
+        <%= form.label :dest_pile, value: "pile-player-hand-#{opponent.id}" do %>
+          <%= opponent.name %>'s hand
+        <% end %>
+      </h2>
+
+      <ul>
+        <%= render partial: 'cards/masked_card', collection: opponent.hand, locals: {
+          form: form,
+          pile: "pile-player-hand-#{opponent.id}"
+        } %>
+      </ul>
+    </section>
+
+    <section id="pile-player-board-<%= opponent.id %>">
+      <h2>
+        <%= form.radio_button :dest_pile, "pile-player-board-#{opponent.id}" %>
+        <%= form.label :dest_pile, value: "pile-player-board-#{opponent.id}" do %>
+          <%= opponent.name %>'s board
+        <% end %>
+      </h2>
+
+      <ul>
+        <% @player.board.each do |card| %>
+          <%= render @player.board,
+            form: form,
+            pile: "pile-player-board-#{opponent.id}"
+          %>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <%= form.submit "Move" %>
+<% end %>

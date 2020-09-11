@@ -31,39 +31,26 @@ class Game < ApplicationRecord
   # - If the game is ONGOING, add spectator, return success.
   #
   # @param game_id [String] the game to join
-  # @return [Result::Failure, Result::Success] whether it worked, with the new
+  # @return [Game] whether it worked, with the new
   #   player and game in the success payload.
-  def self.join(game_id)
+  def self.join!(game_id)
     ### TODO lock and txn
     game = find(game_id)
 
-    if game
-      case game.state
-      when "created"
-        if player = game.add_player!("Player 1")
-          game.update!(state: :waiting)
-          Result::Success.new([player, game])
-        else
-          Result::Failure.model(game)
-        end
-      when "waiting"
-        if player = game.add_player!("Player 2")
-          game.update!(state: :ongoing)
-          Result::Success.new([player, game])
-        else
-          Result::Failure.model(game)
-        end
-      when "ongoing"
-        if player = game.add_spectator!
-          Result::Success.new([player, game])
-        else
-          Result::Failure.model(game)
-        end
-      when "over"
-        Result::Failure.specific(game, :game, :over)
-      end
-    else
-      Result::Failure.specific(game, :game, :missing)
+    case game.state
+    when "created"
+      player = game.add_player!("Player 1")
+      game.update!(state: :waiting)
+      [game, player]
+    when "waiting"
+      player = game.add_player!("Player 2")
+      game.update!(state: :ongoing)
+      [game, player]
+    when "ongoing"
+      spectator = game.add_spectator!
+      [game, spectator]
+    when "over"
+      raise "Cannot join a finished game" ### TODO first class exn
     end
   end
 

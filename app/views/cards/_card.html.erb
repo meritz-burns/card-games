@@ -1,0 +1,9 @@
+<li class="card" id="<%= card.id %>">
+  <%= form.radio_button :source, "#{card.id}-in-#{pile}" %>
+  <%= form.label :source, value: "#{card.id}-in-#{pile}" do %>
+    <span class="card__name"><%= card.name %></span>
+    <span class="card__type"><%= card.type %></span>
+    <span class="card__charge"><%= card.charge %></span>
+    <span class="card__ability"><%= card.ability %></span>
+  <% end %>
+</li>

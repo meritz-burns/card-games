@@ -9,7 +9,6 @@ ruby "2.7.1"
 
 gem "autoprefixer-rails"
 gem "bootsnap", require: false
-gem 'graphql'
 gem "pg"
 gem "puma"
 gem "rack-canonical-host"
@@ -51,5 +50,3 @@ gem 'factory_bot_rails', group: [:development, :test]
 gem 'inline_svg'
 gem 'bundler-audit', '>= 0.7.0', require: false, group: [:development, :test]
 gem 'rack-timeout', group: :production
-
-gem 'graphiql-rails', group: :development

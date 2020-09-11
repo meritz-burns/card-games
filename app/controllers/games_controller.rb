@@ -18,6 +18,8 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game.find(params[:id])
+    @player = Player.find_by!(connection_secret: params[:player_id])
+    @game = @player.game
+    @movement = CardMovement.new(game: @game)
   end
 end

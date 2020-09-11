@@ -3,6 +3,12 @@
 
 <ul>
   <% @games.each do |game| %>
-    <li><%= link_to "Game #{game.id} (#{game.state})", game %><li>
+    <li>
+      <%=
+        button_to "Game #{game.id} (#{game.state})",
+          game_join_path(game),
+          method: :put
+        %>
+    </li>
   <% end %>
 </ul>

@@ -10,6 +10,10 @@ class Card < Struct.new(:name, :type, :charge, :ability, :id)
     end
   end
 
+  def to_partial_path
+    "cards/card"
+  end
+
   private
 
   CARDS = {

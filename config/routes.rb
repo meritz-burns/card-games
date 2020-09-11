@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
-  if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
-  end
-  post "/graphql", to: "graphql#execute"
+  root to: 'games#index'
 
-  resources :games, only: [:new, :create, :index, :show]
   resources :joins, only: [:new, :create]
 
-  root to: 'games#index'
+  resources :games, only: [:new, :create, :index] do
+    resource :join, only: [:update]
+  end
+
+  resources :players, only: [] do
+    resource :game, only: [:show]
+    resource :card_movement, only: [:create]
+    resource :discard, only: [:show]
+    resource :win, only: [:create]
+    resource :lose, only: [:create]
+  end
 end

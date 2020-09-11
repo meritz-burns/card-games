@@ -11,6 +11,14 @@ class Player < ApplicationRecord
     board_ids.map { |card_id| Card.find(card_id) }
   end
 
+  def opponents
+    game.players - [self]
+  end
+
+  def to_param
+    connection_secret
+  end
+
   private
 
   def set_connection_secret
