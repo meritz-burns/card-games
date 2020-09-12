@@ -44,10 +44,10 @@ class CardMovement
     case source_pile
     when /pile-player-hand-(.*)/
       source_player = game.players.find($1)
-      move_from_hand(source_player, source_card, dest_pile)
+      move_from_hand(source_pile, source_player, source_card, dest_pile)
     when /pile-player-board-(.*)/
       source_player = game.players.find($1)
-      move_from_board(source_player, source_card, dest_pile)
+      move_from_board(source_pile, source_player, source_card, dest_pile)
     when 'pile-deck'
       move_from_deck(source_card, dest_pile)
     when 'pile-discard'
@@ -57,7 +57,7 @@ class CardMovement
 
   private
 
-  def move_from_hand(source_player, source_card, dest_pile)
+  def move_from_hand(source_pile, source_player, source_card, dest_pile)
     case dest_pile
     when /pile-player-hand-(.*)/
       raise "not implemented"
@@ -71,6 +71,13 @@ class CardMovement
           source_player.save!
           target_player.save!
         end
+
+        broadcast(
+          source_card: source_card,
+          source_pile: source_pile,
+          dest_pile: dest_pile,
+          extra: { card_id: source_card },
+        )
 
         true
       else
@@ -86,6 +93,15 @@ class CardMovement
           source_player.save!
         end
 
+        broadcast(
+          source_pile: source_pile,
+          dest_pile: dest_pile,
+          extra: {
+            card_id: source_card,
+            new_top_card_id: game.deck_ids.first,
+          },
+        )
+
         true
       else
         errors.add(:source, :not_in_hand)
@@ -99,6 +115,15 @@ class CardMovement
           game.save!
           source_player.save!
         end
+
+        broadcast(
+          source_pile: source_pile,
+          dest_pile: dest_pile,
+          extra: {
+            card_id: source_card,
+            new_top_card_id: game.deck_ids.first,
+          },
+        )
 
         true
       else
@@ -114,6 +139,15 @@ class CardMovement
           source_player.save!
         end
 
+        broadcast(
+          source_pile: source_pile,
+          dest_pile: dest_pile,
+          extra: {
+            discard: game.discard.first,
+            card_id: source_card,
+          },
+        )
+
         true
       else
         errors.add(:source, :not_in_hand)
@@ -122,7 +156,7 @@ class CardMovement
     end
   end
 
-  def move_from_board(source_player, source_card, dest_pile)
+  def move_from_board(source_pile, source_player, source_card, dest_pile)
     case dest_pile
     when /pile-player-hand-(.*)/
       target_player = game.players.find($1)
@@ -135,7 +169,13 @@ class CardMovement
           target_player.save!
         end
 
-        false
+        broadcast(
+          source_card: source_card,
+          source_pile: source_pile,
+          dest_pile: dest_pile,
+        )
+
+        true
       else
         errors.add(:source, :not_installed)
         false
@@ -150,6 +190,12 @@ class CardMovement
           source_player.save!
           target_player.save!
         end
+
+        broadcast(
+          source_card: source_card,
+          source_pile: source_pile,
+          dest_pile: dest_pile,
+        )
 
         true
       else
@@ -166,6 +212,12 @@ class CardMovement
           source_player.save!
           game.save!
         end
+
+        broadcast(
+          source_card: source_card,
+          source_pile: source_pile,
+          dest_pile: dest_pile,
+        )
 
         true
       else
@@ -187,6 +239,12 @@ class CardMovement
           game.save!
           player.save!
         end
+
+        broadcast(
+          source_pile: "pile-deck",
+          dest_pile: dest_pile,
+          extra: { new_top_card_id: game.deck_ids.first },
+        )
 
         true
       else
@@ -215,6 +273,12 @@ class CardMovement
           player.save!
         end
 
+        broadcast(
+          source_pile: "pile-discard",
+          dest_pile: dest_pile,
+          extra: { discard: game.discard.first },
+        )
+
         true
       else
         errors.add(:source, :not_in_discard)
@@ -226,6 +290,35 @@ class CardMovement
       raise "not implemented"
     when 'pile-discard'
       raise "not implemented"
+    end
+  end
+
+  def broadcast(source_card: nil, source_pile:, dest_pile:, extra: {})
+    card = source_card && Card.find(source_card)
+    payload = {
+      source_card: card,
+      source_pile: source_pile,
+      source_pile_type: pile_type(source_pile),
+      dest_pile: dest_pile,
+      dest_pile_type: pile_type(dest_pile),
+      extra: extra,
+    }
+
+    player.opponents.each do |opponent|
+      ActionChannel.broadcast_to(opponent, payload)
+    end
+  end
+
+  def pile_type(pile_name)
+    case pile_name
+    when /pile-player-hand/
+      :hand
+    when /pile-player-board/
+      :board
+    when /pile-deck/
+      :deck
+    when 'pile-discard'
+      :discard
     end
   end
 end

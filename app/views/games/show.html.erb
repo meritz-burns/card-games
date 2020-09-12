@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <meta name="action-cable-url" content="<%= "#{ActionCable.server.config.mount_path}?connection_secret=#{@player.connection_secret}" %>">
+<% end %>
+
 <%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement) do |form| %>
   <section id="pile-player-hand-<%= @player.id %>">
     <h2>
@@ -7,7 +11,7 @@
       <% end %>
     </h2>
 
-    <ul>
+    <ul class="cards">
       <%= render @player.hand,
         form: form,
         pile: "pile-player-hand-#{@player.id}"
@@ -23,7 +27,7 @@
       <% end %>
     </h2>
 
-    <ul>
+    <ul class="cards">
       <%= render @player.board,
         form: form,
         pile: "pile-player-board-#{@player.id}"
@@ -39,10 +43,10 @@
       <% end %>
     </h2>
 
-    <p>Size: 
-      <%= form.radio_button :source, "#{@game.deck.first.id}-in-pile-deck" %>
-      <%= form.label :source, value: "#{@game.deck.first.id}-in-pile-deck" do -%>
-        <%= @game.deck.size -%>
+    <p id="pile-deck-top">Size: 
+      <%= form.radio_button :source, "#{@game.deck_ids.first}-in-pile-deck" %>
+      <%= form.label :source, value: "#{@game.deck_ids.first}-in-pile-deck" do -%>
+        <span id="pile-deck-size"><%= @game.deck_ids.size -%></span>
       <% end -%>.
     </p>
 
@@ -60,7 +64,7 @@
       <% end %>
     </h2>
 
-    <ul>
+    <ul class="cards">
       <%= render @game.discard.first,
         form: form,
         pile: "pile-discard"
@@ -77,11 +81,13 @@
         <% end %>
       </h2>
 
-      <ul>
-        <%= render partial: 'cards/masked_card', collection: opponent.hand, locals: {
-          form: form,
-          pile: "pile-player-hand-#{opponent.id}"
-        } %>
+      <ul class="cards">
+        <%= render partial: 'cards/masked_card',
+          collection: opponent.hand,
+          locals: {
+            form: form,
+            pile: "pile-player-hand-#{opponent.id}",
+          } %>
       </ul>
     </section>
 
@@ -93,13 +99,11 @@
         <% end %>
       </h2>
 
-      <ul>
-        <% @player.board.each do |card| %>
-          <%= render @player.board,
-            form: form,
-            pile: "pile-player-board-#{opponent.id}"
-          %>
-        <% end %>
+      <ul class="cards">
+        <%= render opponent.board,
+          form: form,
+          pile: "pile-player-board-#{opponent.id}"
+        %>
       </ul>
     </section>
   <% end %>
