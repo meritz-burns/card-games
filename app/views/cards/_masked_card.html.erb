@@ -1,3 +1,6 @@
 <li class="masked-card" id="<%= masked_card.id %>" draggable="true">
-  Unknown card
+  <%= form.radio_button :source, "#{masked_card.id}-in-#{pile}" %>
+  <%= form.label :source, value: "#{masked_card.id}-in-#{pile}" do %>
+    Unknown card
+  <% end %>
 </li>
