@@ -4,8 +4,7 @@ class JoinsController < ApplicationController
   end
 
   def create
-    game = Game.create!
-    (_, player) = Game.join!(game.id)
+    (_, player) = Game.join!(params[:game][:id])
     redirect_to player_game_path(player.connection_secret)
   end
 

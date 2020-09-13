@@ -71,10 +71,12 @@
     </h2>
 
     <ul class="cards">
-      <%= render @game.discard.first,
-        form: form,
-        pile: "pile-discard"
-      %>
+      <% if @game.discard_ids.any? %>
+        <%= render @game.discard.first,
+          form: form,
+          pile: "pile-discard"
+        %>
+    <% end %>
     </ul>
   </section>
 
