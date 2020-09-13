@@ -86,7 +86,7 @@ class Game < ApplicationRecord
 
   def set_up_game
     self.deck_ids = (Card.names * 4).shuffle.map.with_index do |card_name, idx|
-      "#{idx}_#{card_name}"
+      Card.generate_identifier(card_name, id, idx)
     end
   end
 end

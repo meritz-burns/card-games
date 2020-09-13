@@ -4,10 +4,13 @@ class Card < Struct.new(:name, :type, :charge, :ability, :id)
   end
 
   def self.find(id)
-    _, name = id.split('_')
-    CARDS[name].tap do |card|
+    CARDS[extract_name(id)].tap do |card|
       card.id = id
     end
+  end
+
+  def self.generate_identifier(card_name, *prefixes)
+    encryption.encrypt((prefixes + [card_name]).join("_"))
   end
 
   def to_partial_path
@@ -15,6 +18,14 @@ class Card < Struct.new(:name, :type, :charge, :ability, :id)
   end
 
   private
+
+  def self.extract_name(identifier)
+    encryption.decrypt(identifier).split('_')[-1]
+  end
+
+  def self.encryption
+    @_encryption ||= CardIdEncryption.new
+  end
 
   CARDS = {
     "Rift" => Card.new(
