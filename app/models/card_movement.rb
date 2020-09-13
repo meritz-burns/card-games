@@ -204,6 +204,8 @@ class CardMovement
       end
     when 'pile-deck'
       raise "not implemented"
+    when 'pile-deck-bottom'
+      raise "not implemented"
     when 'pile-discard'
       if source_player.board_ids.delete(source_card)
         game.discard_ids.prepend(source_card)
