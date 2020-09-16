@@ -1,5 +1,6 @@
 <% content_for :head do %>
   <meta name="action-cable-url" content="<%= "#{ActionCable.server.config.mount_path}?connection_secret=#{@player.connection_secret}" %>">
+  <%= stylesheet_link_tag 'game' %>
 <% end %>
 
 <% content_for :javascript do %>
@@ -7,7 +8,7 @@
 <% end %>
 
 <%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement) do |form| %>
-  <section id="pile-player-hand-<%= @player.id %>" class="pile">
+  <section id="pile-player-hand-<%= @player.id %>" class="pile pile__hand pile__hand__yours">
     <h2>
       <%= form.radio_button :dest_pile, "pile-player-hand-#{@player.id}", class: "pile-radio" %>
       <%= form.label :dest_pile, value: "pile-player-hand-#{@player.id}" do %>
@@ -23,7 +24,7 @@
     </ul>
   </section>
 
-  <section id="pile-player-board-<%= @player.id %>" class="pile">
+  <section id="pile-player-board-<%= @player.id %>" class="pile pile__board pile__board__yours">
     <h2>
       <%= form.radio_button :dest_pile, "pile-player-board-#{@player.id}", class: "pile-radio" %>
       <%= form.label :dest_pile, value: "pile-player-board-#{@player.id}" do %>
@@ -39,7 +40,7 @@
     </ul>
   </section>
 
-  <section id="pile-deck" class="pile">
+  <section id="pile-deck" class="pile pile__deck">
     <h2>
       <%= form.radio_button :dest_pile, "pile-deck", class: "pile-radio" %>
       <%= form.label :dest_pile, value: "pile-deck" do %>
@@ -54,7 +55,7 @@
       <% end -%>.
     </p>
 
-    <section class="pile">
+    <section class="pile pile__deck">
       (<%= form.radio_button :dest_pile, "pile-deck-bottom", class: "pile-radio" -%>
       <%= form.label :dest_pile, value: "pile-deck-bottom" do -%>
         Bottom of the deck
@@ -62,7 +63,7 @@
     </section>
   </section>
 
-  <section id="pile-discard" class="pile">
+  <section id="pile-discard" class="pile pile__discard">
     <h2>
       <%= form.radio_button :dest_pile, "pile-discard", class: "pile-radio" %>
       <%= form.label :dest_pile, value: "pile-discard" do %>
@@ -81,7 +82,7 @@
   </section>
 
   <% @player.opponents.each do |opponent| %>
-    <section id="pile-player-hand-<%= opponent.id %>" class="pile">
+    <section id="pile-player-hand-<%= opponent.id %>" class="pile pile__hand pile__hand__theirs">
       <h2>
         <%= form.radio_button :dest_pile, "pile-player-hand-#{opponent.id}", class: "pile-radio" %>
         <%= form.label :dest_pile, value: "pile-player-hand-#{opponent.id}" do %>
@@ -99,7 +100,7 @@
       </ul>
     </section>
 
-    <section id="pile-player-board-<%= opponent.id %>" class="pile">
+    <section id="pile-player-board-<%= opponent.id %>" class="pile pile__board pile__board__theirs">
       <h2>
         <%= form.radio_button :dest_pile, "pile-player-board-#{opponent.id}", class: "pile-radio" %>
         <%= form.label :dest_pile, value: "pile-player-board-#{opponent.id}" do %>

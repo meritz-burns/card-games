@@ -58,8 +58,6 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    autoprefixer-rails (9.8.6.3)
-      execjs
     awesome_print (1.8.0)
     bindex (0.8.1)
     bitters (2.0.4)
@@ -90,7 +88,6 @@ GEM
     crass (1.0.6)
     diff-lcs (1.4.4)
     erubi (1.9.0)
-    execjs (2.7.0)
     factory_bot (6.1.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.1.0)
@@ -270,7 +267,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  autoprefixer-rails
   awesome_print
   bootsnap
   bullet

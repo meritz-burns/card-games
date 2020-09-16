@@ -34,7 +34,7 @@ function removeFromDeck(newTopCardId) {
   label.setAttribute("for", radio.getAttribute("id"));
 }
 
-function addMaskedCard(pile) {
+function addMaskedCard(card, pile) {
   let dest = document.getElementById(pile);
   let cards = dest.getElementsByClassName("cards")[0];
   let cardHtml = buildMaskedCardElement(card, pile);
@@ -78,47 +78,90 @@ function setDiscard(card) {
   }
 }
 
-function buildCardElement(card, pile) {
-  // <li class="card" id="<%= card.id %>">
-  //   <%= form.radio_button :source, "#{card.id}-in-#{pile}" %>
-  //   <%= form.label :source, value: "#{card.id}-in-#{pile}" do %>
-  //     <span class="card__name"><%= card.name %></span>
-  //     <span class="card__type"><%= card.type %></span>
-  //     <span class="card__charge"><%= card.charge %></span>
-  //     <span class="card__ability"><%= card.ability %></span>
+function buildMaskedCardElement(card, pile) {
+  // <li class="masked-card" id="<%= masked_card.id %>" draggable="true">
+  //   <%= form.radio_button :source, "#{masked_card.id}-in-#{pile}" %>
+  //   <%= form.label :source, value: "#{masked_card.id}-in-#{pile}" do %>
+  //     Unknown card
   //   <% end %>
   // </li>
 
   let li = document.createElement("li");
-  li.setAttribute("class", "card");
+  li.setAttribute("class", "masked-card");
   li.setAttribute("id", card.id);
+  li.setAttribute("draggable", "true")
 
   let radio = document.createElement("input");
   radio.setAttribute("id","card_movement_source_" + card.id + "-in-" + pile);
   radio.setAttribute("type", "radio");
   radio.setAttribute("value", card.id + "-in-" + pile);
   radio.setAttribute("name", "card_movement[source]");
+  radio.hidden = true;
 
   let label = document.createElement("label");
   label.setAttribute("for", radio.getAttribute("id"));
+  label.setAttribute("class", "card__details");
+  label.appendChild(document.createTextNode("Unknown card"));
+
+  li.appendChild(radio);
+  li.appendChild(label);
+
+  return li;
+}
+
+function buildCardElement(card, pile) {
+  // <li class="card card__<%= card.type %>"" id="<%= card.id %>" draggable="true">
+  //   <%= form.radio_button :source, "#{card.id}-in-#{pile}" %>
+  //   <%= form.label :source, value: "#{card.id}-in-#{pile}", class: "card__details" do %>
+  //     <span class="card__name"><%= card.name %></span>
+  //     <span class="card__image"><img src="https://placekitten.com/175/175"></span>
+  //     <span class="card__type" title="<%= card.type %>"></span>
+  //     <span class="card__charge"><%= card.charge %></span>
+  //     <span class="card__ability"><%= card.ability %></span>
+  //   <% end %>
+  // </li>
+
+  let li = document.createElement("li");
+  li.setAttribute("class", "card card__" + card.type);
+  li.setAttribute("id", card.id);
+  li.setAttribute("draggable", "true")
+
+  let radio = document.createElement("input");
+  radio.setAttribute("id","card_movement_source_" + card.id + "-in-" + pile);
+  radio.setAttribute("type", "radio");
+  radio.setAttribute("value", card.id + "-in-" + pile);
+  radio.setAttribute("name", "card_movement[source]");
+  radio.hidden = true;
+
+  let label = document.createElement("label");
+  label.setAttribute("for", radio.getAttribute("id"));
+  label.setAttribute("class", "card__details");
 
   let cardName = document.createElement("span");
   cardName.setAttribute("class", "card__name");
   cardName.appendChild(document.createTextNode(card.name));
 
+  let image = document.createElement("img");
+  image.setAttribute("src", "https://placekitten.com/175/175");
+
+  let cardImage = document.createElement("span");
+  cardImage.setAttribute("class", "card__image");
+  cardImage.appendChild(image);
+
   let cardType = document.createElement("span");
-  cardName.setAttribute("class", "card__type");
-  cardName.appendChild(document.createTextNode(card.type));
+  cardType.setAttribute("class", "card__type");
+  cardType.setAttribute("title", card.type);
 
   let cardCharge = document.createElement("span");
-  cardName.setAttribute("class", "card__charge");
-  cardName.appendChild(document.createTextNode(card.charge));
+  cardCharge.setAttribute("class", "card__charge");
+  cardCharge.appendChild(document.createTextNode(card.charge));
 
   let cardAbility = document.createElement("span");
-  cardName.setAttribute("class", "card__ability");
-  cardName.appendChild(document.createTextNode(card.ability));
+  cardAbility.setAttribute("class", "card__ability");
+  cardAbility.appendChild(document.createTextNode(card.ability));
 
   label.appendChild(cardName);
+  label.appendChild(cardImage);
   label.appendChild(cardType);
   label.appendChild(cardCharge);
   label.appendChild(cardAbility);
@@ -139,7 +182,7 @@ consumer.subscriptions.create("ActionChannel", {
       switch (data["dest_pile_type"]) {
       case "hand":
         removeCard(data["source_card"], data["source_pile"]);
-        addMaskedCard(data["dest_pile"]);
+        addMaskedCard(data["source_card"], data["dest_pile"]);
         break;
       case "board":
         removeCard(data["source_card"], data["source_pile"]);
@@ -155,7 +198,7 @@ consumer.subscriptions.create("ActionChannel", {
       switch (data["dest_pile_type"]) {
       case "hand":
         removeFromDeck(data["extra"]["new_top_card_id"]);
-        addMaskedCard(data["dest_pile"]);
+        addMaskedCard(data["source_card"], data["dest_pile"]);
         break;
       }
       break;
@@ -163,7 +206,7 @@ consumer.subscriptions.create("ActionChannel", {
       switch (data["dest_pile_type"]) {
       case "hand":
         setDiscard(data["extra"]["discard"]);
-        addMaskedCard(data["dest_pile"]);
+        addMaskedCard(data["source_card"], data["dest_pile"]);
         break;
       }
       break;

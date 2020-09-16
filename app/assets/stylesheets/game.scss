@@ -1,0 +1,149 @@
+body {
+  // 119, 136, 153
+  // hsl 210, 14.3, 53.3
+  background-color: lightslategray;
+}
+
+.pile {
+  border-radius: 5px;
+  padding: 0.5em;
+}
+
+.pile__hand {
+  background-color: #b1bbc5;
+  border: 1px solid #b1bbc5;
+}
+
+.pile__hand__yours {
+  grid-area: your-hand;
+}
+
+.pile__hand__theirs {
+  grid-area: their-hand;
+}
+
+.pile__board {
+  background-color: #c3cad2;
+  border: 1px solid #c3cad2;
+}
+
+.pile__board__yours {
+  grid-area: your-board;
+}
+
+.pile__board__theirs {
+  grid-area: their-board;
+}
+
+.pile__deck {
+  background-color: #495561;
+  border: 1px solid #495561;
+  grid-area: deck;
+}
+
+.pile__discard {
+  background-color: #333b44;
+  border: 1px solid #333b44;
+  grid-area: discard;
+}
+
+ul.cards {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.new_card_movement {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 33% 33% auto;
+  grid-template-areas:
+    "their-hand their-board their-board their-board"
+    "discard deck your-hand your-hand"
+    "your-board your-board your-board your-board";
+  grid-gap: 1em;
+  align-items: start;
+}
+
+.card__bronze {
+  background-color: #cd7f32;
+}
+
+.card__bronze .card__type {
+  background-image: url(https://placekitten.com/10/10);
+}
+
+.card__silver {
+  background-color: silver;
+}
+
+.card__silver .card__type {
+  background-image: url(https://placekitten.com/10/10);
+}
+
+.card__name {
+  grid-area: name;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.card__type {
+  grid-area: type;
+  height: 10px;
+  width: 10px;
+}
+
+.card__charge {
+  grid-area: charge;
+  font-size: larger;
+}
+.card__ability {
+  grid-area: ability;
+}
+
+.card__image {
+  grid-area: image;
+}
+
+.card {
+  width: 200px;
+  height: 323px;
+  float: left;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0.5em;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+}
+
+.card__details {
+  display: grid;
+  grid-template-columns: 10px auto;
+  grid-template-rows: 10px auto 15% auto;
+  grid-template-areas:
+    "charge image"
+    "type image"
+    "name name"
+    "ability ability";
+  grid-gap: 1em;
+  align-items: start;
+}
+
+.masked-card {
+  width: 200px;
+  height: 323px;
+  float: left;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+  background-image: url(https://placekitten.com/200/323);
+}
+
+.masked-card label {
+  opacity: 0;
+}
+
+.masked-card + .masked-card {
+  margin-left: -190px;
+  margin-top: 1em;
+}

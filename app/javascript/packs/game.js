@@ -41,6 +41,14 @@ function dropHandler(ev) {
   form.submit();
 }
 
+function hideFormWidgets() {
+  const inputs = document.getElementsByTagName("input");
+
+  for (element of inputs) {
+    element.hidden = true;
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   const cards = document.getElementsByClassName("card");
   const maskedCards = document.getElementsByClassName("masked-card");
@@ -61,4 +69,6 @@ window.addEventListener('DOMContentLoaded', () => {
     element.addEventListener("drop", dropHandler);
     element.addEventListener("dragover", dragoverHandler);
   }
+
+  hideFormWidgets();
 });

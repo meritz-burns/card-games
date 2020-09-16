@@ -243,6 +243,7 @@ class CardMovement
         end
 
         broadcast(
+          source_card: source_card,
           source_pile: "pile-deck",
           dest_pile: dest_pile,
           extra: { new_top_card_id: game.deck_ids.first },
@@ -276,6 +277,7 @@ class CardMovement
         end
 
         broadcast(
+          source_card: source_card,
           source_pile: "pile-discard",
           dest_pile: dest_pile,
           extra: { discard: game.discard.first },
