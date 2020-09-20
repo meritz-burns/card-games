@@ -57,7 +57,6 @@ heroku local
 Once the server is started the application is reachable at
 `http://localhost:3000`.
 
-
 ## Profiler
 
 The [rack-mini-profiler] gem can be enabled by setting
@@ -65,3 +64,7 @@ The [rack-mini-profiler] gem can be enabled by setting
 badge on every page.
 
 [rack-mini-profiler]: https://github.com/MiniProfiler/rack-mini-profiler
+
+## Production
+
+Deploy using `bin/deploy`.
