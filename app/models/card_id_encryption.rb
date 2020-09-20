@@ -32,7 +32,7 @@ class CardIdEncryption
 
   def key(salt = encryption_salt)
     ActiveSupport::KeyGenerator.new(
-      Rails.application.secrets.secret_key_base,
+      Rails.application.secret_key_base,
     ).generate_key(salt, key_len)
   end
 end
