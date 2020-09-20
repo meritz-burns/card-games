@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if git status --porcelain=v1 | grep -q . ; then
+  echo "commit first"
+  exit 1
+fi
+
+set -e
+
+TREEISH_WAS=$(git status -b --porcelain=v1 | awk '{ print $2 }')
+TAG_NAME=$(date +v%Y%m%dT%H%M%S)
+BRANCH_NAME=b$TAG_NAME
+
+set -x
+
+git checkout -b $BRANCH_NAME
+
+env SECRET_KEY_BASE=ignored \
+  APPLICATION_HOST=cntrl.mike-burns.com \
+  RAILS_ENV=production \
+  RACK_ENV=production \
+  NODE_ENV=production \
+  rails assets:precompile
+
+find public/assets -type f | xargs git add -f
+find public/packs -type f | xargs git add -f
+
+git commit -m "Release $BRANCH_NAME"
+git tag -sm "Release $TAG_NAME" $TAG_NAME $BRANCH_NAME
+git checkout $TREEISH_WAS
+git branch -D $BRANCH_NAME
+git push origin $TAG_NAME
