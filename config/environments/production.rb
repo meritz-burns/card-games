@@ -27,4 +27,5 @@ Rails.application.configure do
     protocol: "https",
   }
   config.action_mailer.asset_host = ENV.fetch("ASSET_HOST", ENV.fetch("APPLICATION_HOST"))
+  config.credentials.key_path = "/var/rails/cntrl.mike-burns.com/production.key"
 end
