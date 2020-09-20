@@ -15,7 +15,6 @@ gem "rails", "~> 6.0.0"
 gem "recipient_interceptor"
 gem "sassc-rails"
 gem "sprockets", "< 4"
-gem "tzinfo-data", platforms: [:mingw, :x64_mingw, :mswin, :jruby]
 gem "webpacker"
 
 group :development do

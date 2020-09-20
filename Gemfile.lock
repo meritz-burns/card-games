@@ -294,7 +294,6 @@ DEPENDENCIES
   sprockets (< 4)
   suspenders
   timecop
-  tzinfo-data
   web-console
   webdrivers
   webmock
