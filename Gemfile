@@ -17,6 +17,10 @@ gem "sassc-rails"
 gem "sprockets", "< 4"
 gem "webpacker"
 
+group :production do
+  gem "redis"
+end
+
 group :development do
   gem "listen"
   gem "web-console"

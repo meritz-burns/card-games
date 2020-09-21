@@ -184,6 +184,7 @@ GEM
       ffi (~> 1.0)
     recipient_interceptor (0.2.0)
       mail
+    redis (4.2.2)
     regexp_parser (1.7.1)
     rspec-core (3.9.2)
       rspec-support (~> 3.9.3)
@@ -287,6 +288,7 @@ DEPENDENCIES
   rack-timeout
   rails (~> 6.0.0)
   recipient_interceptor
+  redis
   rspec-rails (~> 3.6)
   sassc-rails
   shoulda-matchers
