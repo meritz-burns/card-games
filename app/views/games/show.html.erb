@@ -4,7 +4,7 @@
 <% end %>
 
 <% content_for :javascript do %>
-  <%= javascript_pack_tag "game" %>
+  <%= javascript_pack_tag :application, :game %>
 <% end %>
 
 <%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement) do |form| %>
