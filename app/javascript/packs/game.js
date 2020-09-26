@@ -1,3 +1,5 @@
+import Rails from "@rails/ujs";
+
 /* draggables */
 
 function dragStart(ev) {
@@ -8,7 +10,7 @@ function dragStart(ev) {
   const source = findTarget(ev.target);
   const dests = destsForSource(source);
 
-  for (dest of dests) {
+  for (const dest of dests) {
     dest.classList.add("drop-target");
     dest.addEventListener("dragover", dragOver);
     dest.addEventListener("dragenter", dragEnter);
@@ -21,7 +23,7 @@ function dragEnd(ev) {
   const source = findTarget(ev.target);
   const dests = destsForSource(source);
 
-  for (dest of dests) {
+  for (const dest of dests) {
     dest.classList.remove("drop-target");
     dest.classList.remove("drop-over");
     dest.removeEventListener("drop", drop);
@@ -63,12 +65,14 @@ function drop(ev) {
 
   const data = ev.dataTransfer.getData("application/x-source-id");
   const source = document.getElementById(data);
+  if (source === null)
+    return;
 
-  for (e of [dest, source]) {
+  for (const e of [dest, source]) {
     e.getElementsByTagName("input")[0].checked = true;
   }
 
-  document.getElementById("new_card_movement").submit();
+  Rails.fire(document.getElementById("new_card_movement"), "submit");
 }
 
 /* helpers */
@@ -122,7 +126,7 @@ function connectDragables() {
 function hideFormWidgets() {
   const inputs = document.getElementsByTagName("input");
 
-  for (element of inputs) {
+  for (const element of inputs) {
     element.hidden = true;
   }
 }

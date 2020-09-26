@@ -7,7 +7,7 @@
   <%= javascript_pack_tag :application, :game %>
 <% end %>
 
-<%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement) do |form| %>
+<%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement), remote: true do |form| %>
   <section id="pile-player-hand-<%= @player.id %>" class="pile pile__hand pile__hand__yours">
     <h2>
       <%= form.radio_button :dest_pile, "pile-player-hand-#{@player.id}", class: "pile-radio" %>

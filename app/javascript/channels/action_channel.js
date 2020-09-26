@@ -34,10 +34,10 @@ function removeFromDeck(newTopCardId) {
   label.setAttribute("for", radio.getAttribute("id"));
 }
 
-function addMaskedCard(card, pile) {
+function addMaskedCard(cardId, pile) {
   let dest = document.getElementById(pile);
   let cards = dest.getElementsByClassName("cards")[0];
-  let cardHtml = buildMaskedCardElement(card, pile);
+  let cardHtml = buildMaskedCardElement(cardId, pile);
 
   cards.appendChild(cardHtml);
 }
@@ -56,10 +56,17 @@ function addCard(card, pile) {
   cards.appendChild(cardHtml);
 }
 
-function removeCard(card, pile) {
-  let cardElement = document.getElementById(card.id);
+function removeCard(cardId, pile) {
+  let cardElement = document.getElementById(cardId);
 
   cardElement.parentElement.removeChild(cardElement);
+}
+
+function addPotentiallyMaskedCard(card, cardId, pile) {
+  if (card !== null && card !== undefined)
+    addCard(card, pile);
+  else
+    addMaskedCard(cardId, pile);
 }
 
 function setDiscard(card) {
@@ -78,7 +85,7 @@ function setDiscard(card) {
   }
 }
 
-function buildMaskedCardElement(card, pile) {
+function buildMaskedCardElement(cardId, pile) {
   // <li class="masked-card" id="<%= masked_card.id %>" draggable="true">
   //   <%= form.radio_button :source, "#{masked_card.id}-in-#{pile}" %>
   //   <%= form.label :source, value: "#{masked_card.id}-in-#{pile}" do %>
@@ -88,13 +95,13 @@ function buildMaskedCardElement(card, pile) {
 
   let li = document.createElement("li");
   li.setAttribute("class", "masked-card");
-  li.setAttribute("id", card.id);
+  li.setAttribute("id", cardId);
   li.setAttribute("draggable", "true")
 
   let radio = document.createElement("input");
-  radio.setAttribute("id","card_movement_source_" + card.id + "-in-" + pile);
+  radio.setAttribute("id","card_movement_source_" + cardId + "-in-" + pile);
   radio.setAttribute("type", "radio");
-  radio.setAttribute("value", card.id + "-in-" + pile);
+  radio.setAttribute("value", cardId + "-in-" + pile);
   radio.setAttribute("name", "card_movement[source]");
   radio.hidden = true;
 
@@ -181,15 +188,19 @@ consumer.subscriptions.create("ActionChannel", {
     case "board":
       switch (data["dest_pile_type"]) {
       case "hand":
-        removeCard(data["source_card"], data["source_pile"]);
-        addMaskedCard(data["source_card"], data["dest_pile"]);
+        removeCard(data["extra"]["source_card_id"], data["source_pile"]);
+        addPotentiallyMaskedCard(
+            data["source_card"],
+            data["extra"]["source_card_id"],
+            data["dest_pile"]
+        );
         break;
       case "board":
-        removeCard(data["source_card"], data["source_pile"]);
+        removeCard(data["source_card"].id, data["source_pile"]);
         addCard(data["source_card"], data["dest_pile"]);
         break;
       case "discard":
-        removeCard(data["source_card"], data["source_pile"]);
+        removeCard(data["source_card"].id, data["source_pile"]);
         setDiscard(data["source_card"]);
         break;
       }
@@ -198,7 +209,11 @@ consumer.subscriptions.create("ActionChannel", {
       switch (data["dest_pile_type"]) {
       case "hand":
         removeFromDeck(data["extra"]["new_top_card_id"]);
-        addMaskedCard(data["source_card"], data["dest_pile"]);
+        addPotentiallyMaskedCard(
+            data["source_card"],
+            data["extra"]["source_card_id"],
+            data["dest_pile"]
+        );
         break;
       }
       break;
@@ -206,22 +221,26 @@ consumer.subscriptions.create("ActionChannel", {
       switch (data["dest_pile_type"]) {
       case "hand":
         setDiscard(data["extra"]["discard"]);
-        addMaskedCard(data["source_card"], data["dest_pile"]);
+        addPotentiallyMaskedCard(
+            data["source_card"],
+            data["extra"]["source_card_id"],
+            data["dest_pile"]
+        );
         break;
       }
       break;
     case "hand":
       switch (data["dest_pile_type"]) {
       case "board":
-        removeMaskedCard(data["extra"]["card_id"]);
+        removeMaskedCard(data["extra"]["source_card_id"]);
         addCard(data["source_card"], data["dest_pile"]);
         break;
       case "deck": // pile-deck, pile-deck-bottom
-        removeMaskedCard(data["extra"]["card_id"]);
+        removeMaskedCard(data["extra"]["source_card_id"]);
         addToDeck(data["extra"]["new_top_card_id"]);
         break;
       case "discard":
-        removeMaskedCard(data["extra"]["card_id"]);
+        removeMaskedCard(data["extra"]["source_card_id"]);
         setDiscard(data["extra"]["discard"]);
         break;
       }

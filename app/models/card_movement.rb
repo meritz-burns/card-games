@@ -76,7 +76,7 @@ class CardMovement
           source_card: source_card,
           source_pile: source_pile,
           dest_pile: dest_pile,
-          extra: { card_id: source_card },
+          extra: { source_card_id: source_card },
         )
 
         true
@@ -97,7 +97,7 @@ class CardMovement
           source_pile: source_pile,
           dest_pile: dest_pile,
           extra: {
-            card_id: source_card,
+            source_card_id: source_card,
             new_top_card_id: game.deck_ids.first,
           },
         )
@@ -120,7 +120,7 @@ class CardMovement
           source_pile: source_pile,
           dest_pile: dest_pile,
           extra: {
-            card_id: source_card,
+            source_card_id: source_card,
             new_top_card_id: game.deck_ids.first,
           },
         )
@@ -144,7 +144,7 @@ class CardMovement
           dest_pile: dest_pile,
           extra: {
             discard: game.discard.first,
-            card_id: source_card,
+            source_card_id: source_card,
           },
         )
 
@@ -173,6 +173,8 @@ class CardMovement
           source_card: source_card,
           source_pile: source_pile,
           dest_pile: dest_pile,
+          masked: true,
+          extra: { source_card_id: source_card },
         )
 
         true
@@ -246,7 +248,11 @@ class CardMovement
           source_card: source_card,
           source_pile: "pile-deck",
           dest_pile: dest_pile,
-          extra: { new_top_card_id: game.deck_ids.first },
+          masked: true,
+          extra: {
+            new_top_card_id: game.deck_ids.first,
+            source_card_id: source_card,
+          },
         )
 
         true
@@ -280,7 +286,11 @@ class CardMovement
           source_card: source_card,
           source_pile: "pile-discard",
           dest_pile: dest_pile,
-          extra: { discard: game.discard.first },
+          masked: true,
+          extra: {
+            discard: game.discard.first,
+            source_card_id: source_card,
+          },
         )
 
         true
@@ -297,7 +307,7 @@ class CardMovement
     end
   end
 
-  def broadcast(source_card: nil, source_pile:, dest_pile:, extra: {})
+  def broadcast(source_card: nil, source_pile:, dest_pile:, masked: false, extra: {})
     card = source_card && Card.find(source_card)
     payload = {
       source_card: card,
@@ -308,8 +318,16 @@ class CardMovement
       extra: extra,
     }
 
-    player.opponents.each do |opponent|
-      ActionChannel.broadcast_to(opponent, payload)
+    game.players.each do |participant|
+      if masked
+        if participant == player
+          payload[:source_card] = card
+        else
+          payload.delete(:source_card)
+        end
+      end
+
+      ActionChannel.broadcast_to(participant, payload)
     end
   end
 
