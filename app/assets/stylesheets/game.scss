@@ -147,3 +147,15 @@ ul.cards {
   margin-left: -190px;
   margin-top: 1em;
 }
+
+.drop-target {
+  border: 2px solid green;
+}
+
+.drop-over {
+  background-color: grey;
+}
+
+.drag-target {
+  opacity: 0.5;
+}
