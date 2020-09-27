@@ -52,7 +52,7 @@ ul.cards {
   padding-left: 0;
 }
 
-.new_card_movement {
+.game_form {
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
   grid-template-rows: 33% 33% auto;
@@ -158,4 +158,8 @@ ul.cards {
 
 .drag-target {
   opacity: 0.5;
+}
+
+a {
+  color: black;
 }

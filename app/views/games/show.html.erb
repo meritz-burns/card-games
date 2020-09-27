@@ -7,7 +7,7 @@
   <%= javascript_pack_tag :application, :game %>
 <% end %>
 
-<%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement), remote: true do |form| %>
+<%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement), remote: true, html: { class: "new_card_movement game_form" } do |form| %>
   <section id="pile-player-hand-<%= @player.id %>" class="pile pile__hand pile__hand__yours">
     <h2>
       <%= form.radio_button :dest_pile, "pile-player-hand-#{@player.id}", class: "pile-radio" %>
@@ -71,13 +71,15 @@
       <% end %>
     </h2>
 
+    <p>(<%= link_to t(".inspect_discard"), player_discard_path(@player) %>)</p>
+
     <ul class="cards">
       <% if @game.discard_ids.any? %>
         <%= render @game.discard.first,
           form: form,
           pile: "pile-discard"
         %>
-    <% end %>
+      <% end %>
     </ul>
   </section>
 
@@ -117,5 +119,5 @@
     </section>
   <% end %>
 
-  <%= form.submit "Move" %>
+  <%= form.submit t(".move_button") %>
 <% end %>

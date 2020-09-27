@@ -1,6 +1,8 @@
 class DiscardsController < ApplicationController
   def show
-    player = Player.find_by!(connection_secret: params[:player_id])
-    @game = player.game
+    @movement = CardMovement.from_connection(params[:player_id])
+    @player = @movement.player
+    @game = @movement.game
+    @movement.dest_pile = "pile-player-hand-#{@player.id}"
   end
 end

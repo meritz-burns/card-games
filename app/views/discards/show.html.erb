@@ -1,5 +1,24 @@
-<ul>
-  <% @game.discard.each do |card| %>
-    <%= render card %>
-  <% end %>
-</ul>
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'game' %>
+<% end %>
+
+<% content_for :javascript do %>
+  <%= javascript_pack_tag :discard %>
+<% end %>
+
+<h1>The discard pile</h1>
+
+<p>Select a card to move into your hand.</p>
+
+<%= form_for [@player, @movement], url: player_card_movement_path(@player, @movement) do |form| %>
+
+  <ul class="cards">
+    <% @game.discard.each do |card| %>
+      <%= render card, form: form, pile: "pile-discard" %>
+    <% end %>
+  </ul>
+
+  <%= form.hidden_field :dest_pile %>
+
+  <%= form.submit t(".move_button") %>
+<% end %>

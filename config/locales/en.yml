@@ -26,12 +26,18 @@ en:
               not_installed: "is not installed on any player's board"
               not_in_deck: "is not in the deck"
 
+  discards:
+    show:
+      move_button: "Move into your hand"
   games:
     index:
       start: "Start a new game"
       join: "Join a game by number"
     new:
       start_button: "Start"
+    show:
+      inspect_discard: "Inspect"
+      move_button: "Move"
   joins:
     new:
       join_button: "Join"
