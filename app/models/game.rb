@@ -8,7 +8,7 @@ class Game < ApplicationRecord
     :over => 3,
   }
 
-  before_create :set_up_game
+  after_create :set_up_game
 
   has_many :players
 
@@ -88,5 +88,7 @@ class Game < ApplicationRecord
     self.deck_ids = (Card.names * 4).shuffle.map.with_index do |card_name, idx|
       Card.generate_identifier(card_name, id, idx)
     end
+
+    save!
   end
 end
