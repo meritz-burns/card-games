@@ -1,5 +1,5 @@
 Rails.application.configure do
-  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.disable_request_forgery_protection = false
   config.cache_classes = true
   config.eager_load = true
   config.consider_all_requests_local = false
