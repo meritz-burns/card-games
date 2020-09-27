@@ -5,6 +5,7 @@ class CardMovementsController < ApplicationController
     if movement.move(movement_params)
       redirect_to [movement.player, movement.game]
     else
+      Rails.logger.error("could not move: #{movement.errors.full_messages.join('. ')}")
       redirect_to [movement.player, movement.game],
         alert: movement.errors.full_messages.join(". ")
     end
