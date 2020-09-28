@@ -4,9 +4,10 @@ class LosesController < ApplicationController
     game = player.game
 
     if game.update(state: :over)
-      redirect_to game
+      redirect_to player_game_path(player)
     else
-      redirect_to game, alert: game.errors.full_messages.join(". ")
+      redirect_to player_game_path(player),
+        alert: game.errors.full_messages.join(". ")
     end
   end
 end
