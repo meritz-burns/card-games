@@ -71,7 +71,7 @@
       <% end %>
     </h2>
 
-    <p>(<%= link_to t(".inspect_discard"), player_discard_path(@player) %>)</p>
+    <p>(<%= link_to t(".inspect_discard"), player_discard_path(@player), draggable: false %>)</p>
 
     <ul class="cards">
       <% if @game.discard_ids.any? %>

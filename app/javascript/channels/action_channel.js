@@ -150,6 +150,7 @@ function buildCardElement(card, pile) {
 
   let image = document.createElement("img");
   image.setAttribute("src", "https://placekitten.com/175/175");
+  image.setAttribute("draggable", false);
 
   let cardImage = document.createElement("span");
   cardImage.setAttribute("class", "card__image");

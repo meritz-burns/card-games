@@ -2,7 +2,7 @@
   <%= form.radio_button :source, "#{card.id}-in-#{pile}" %>
   <%= form.label :source, value: "#{card.id}-in-#{pile}", class: "card__details" do %>
     <span class="card__name"><%= card.name %></span>
-    <span class="card__image"><img src="https://placekitten.com/175/175"></span>
+    <span class="card__image"><img src="https://placekitten.com/175/175" draggable="false"></span>
     <span class="card__type" title="<%= card.type %>"></span>
     <span class="card__charge"><%= card.charge %></span>
     <span class="card__ability"><%= card.ability %></span>
