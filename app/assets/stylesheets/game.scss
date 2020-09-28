@@ -104,10 +104,31 @@ ul.cards {
   grid-area: image;
 }
 
-.card {
+.cards__stack .card {
   width: 200px;
   height: 323px;
-  float: left;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0.5em;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+}
+
+.cards__spread .card {
+  width: 200px;
+  height: 323px;
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0.5em;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+}
+
+.cards__mask .card {
+  width: 200px;
+  height: 323px;
+  display: inline-block;
   border: 1px solid black;
   border-radius: 5px;
   padding: 0.5em;
@@ -128,10 +149,10 @@ ul.cards {
   align-items: start;
 }
 
-.masked-card {
+.cards__mask .masked-card {
   width: 200px;
   height: 323px;
-  float: left;
+  display: inline-block;
   border: 1px solid black;
   border-radius: 5px;
   margin-left: 0.5em;
@@ -145,7 +166,6 @@ ul.cards {
 
 .masked-card + .masked-card {
   margin-left: -190px;
-  margin-top: 1em;
 }
 
 .drop-target {

@@ -16,7 +16,7 @@
       <% end %>
     </h2>
 
-    <ul class="cards">
+    <ul class="cards cards__spread">
       <%= render @player.hand,
         form: form,
         pile: "pile-player-hand-#{@player.id}"
@@ -32,7 +32,7 @@
       <% end %>
     </h2>
 
-    <ul class="cards">
+    <ul class="cards cards__spread">
       <%= render @player.board,
         form: form,
         pile: "pile-player-board-#{@player.id}"
@@ -73,7 +73,7 @@
 
     <p>(<%= link_to t(".inspect_discard"), player_discard_path(@player), draggable: false %>)</p>
 
-    <ul class="cards">
+    <ul class="cards cards__stack">
       <% if @game.discard_ids.any? %>
         <%= render @game.discard.first,
           form: form,
@@ -92,7 +92,7 @@
         <% end %>
       </h2>
 
-      <ul class="cards">
+      <ul class="cards cards__mask">
         <%= render partial: 'cards/masked_card',
           collection: opponent.hand,
           locals: {
@@ -110,7 +110,7 @@
         <% end %>
       </h2>
 
-      <ul class="cards">
+      <ul class="cards cards__spread">
         <%= render opponent.board,
           form: form,
           pile: "pile-player-board-#{opponent.id}"
