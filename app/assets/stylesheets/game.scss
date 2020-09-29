@@ -123,7 +123,7 @@ ul.cards {
   margin-top: 0.5em;
 }
 
-.cards__mask .card {
+.cards__mask .card, .cards__count .card {
   width: 200px;
   height: 323px;
   display: inline-block;
@@ -145,15 +145,35 @@ ul.cards {
   align-items: start;
 }
 
-.cards__mask .masked-card {
-  width: 200px;
-  height: 323px;
+.cards__count .count-card {
+  width: 188px; // 200 - 12
+  height: 311px; // 323px - 12
   display: inline-block;
   border: 1px solid black;
   border-radius: 5px;
   margin-left: 0.5em;
   margin-top: 0.5em;
+  background-color: grey;
+  padding-left: 12px;
+  padding-top: 12px;
+}
+
+.cards__count .card, .cards__count .masked-card {
+  margin-left: -160px;
+  margin-top: 1em;
+}
+
+.cards__mask .masked-card, .cards__count .masked-card {
+  width: 200px;
+  height: 323px;
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 5px;
   background-image: url(https://placekitten.com/200/323);
+}
+
+.cards__mask .masked-card {
+  margin-left: 0.5em;
 }
 
 .masked-card label {

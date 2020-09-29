@@ -48,12 +48,20 @@
       <% end %>
     </h2>
 
-    <p id="pile-deck-top" draggable="true">Size: 
-      <%= form.radio_button :source, "#{@game.deck_ids.first}-in-pile-deck", class: "pile-radio" %>
-      <%= form.label :source, value: "#{@game.deck_ids.first}-in-pile-deck" do -%>
-        <span id="pile-deck-size"><%= @game.deck_ids.size -%></span>
-      <% end -%>.
-    </p>
+    <ul class="cards cards__count">
+      <li class="count-card">
+        <span id="pile-deck-size"><%= @game.deck_ids.count %></span>
+      </li>
+
+      <% if @game.deck_ids.any? %>
+        <%= render partial: 'cards/masked_card',
+          locals: {
+          masked_card: @game.deck_ids.first,
+          form: form,
+          pile: "pile-deck",
+        } %>
+      <% end %>
+    </ul>
 
     <section class="pile pile__deck">
       (<%= form.radio_button :dest_pile, "pile-deck-bottom", class: "pile-radio" -%>
@@ -73,7 +81,11 @@
 
     <p>(<%= link_to t(".inspect_discard"), player_discard_path(@player), draggable: false %>)</p>
 
-    <ul class="cards cards__stack">
+    <ul class="cards cards__count">
+      <li class="count-card">
+        <span id="pile-discard-size"><%= @game.discard_ids.count %></span>
+      </li>
+
       <% if @game.discard_ids.any? %>
         <%= render @game.discard.first,
           form: form,
