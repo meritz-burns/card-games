@@ -94,7 +94,7 @@
 
       <ul class="cards cards__mask">
         <%= render partial: 'cards/masked_card',
-          collection: opponent.hand,
+          collection: opponent.hand_ids,
           locals: {
             form: form,
             pile: "pile-player-hand-#{opponent.id}",
@@ -131,7 +131,7 @@
   <template id="template-masked-card">
     <%= render partial: 'cards/masked_card',
       locals: {
-        masked_card: DummyCard.new,
+        masked_card: "dummy",
         form: form,
         pile: "pile-dummy",
     } %>
