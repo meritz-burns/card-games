@@ -120,4 +120,20 @@
   <% end %>
 
   <%= form.submit t(".move_button") %>
+
+  <template id="template-card">
+    <%= render DummyCard.new,
+        form: form,
+        pile: "pile-dummy"
+      %>
+  </template>
+
+  <template id="template-masked-card">
+    <%= render partial: 'cards/masked_card',
+      locals: {
+        masked_card: DummyCard.new,
+        form: form,
+        pile: "pile-dummy",
+    } %>
+  </template>
 <% end %>

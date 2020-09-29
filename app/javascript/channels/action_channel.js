@@ -86,98 +86,51 @@ function setDiscard(card) {
 }
 
 function buildMaskedCardElement(cardId, pile) {
-  // <li class="masked-card" id="<%= masked_card.id %>" draggable="true">
-  //   <%= form.radio_button :source, "#{masked_card.id}-in-#{pile}" %>
-  //   <%= form.label :source, value: "#{masked_card.id}-in-#{pile}" do %>
-  //     Unknown card
-  //   <% end %>
-  // </li>
+  const cardTemplate = document.getElementById("template-masked-card");
+  const newCard = cardTemplate.content.firstElementChild.cloneNode(true);
 
-  let li = document.createElement("li");
-  li.setAttribute("class", "masked-card");
-  li.setAttribute("id", cardId);
-  li.setAttribute("draggable", "true")
+  newCard.setAttribute("id", cardId);
 
-  let radio = document.createElement("input");
+  const radio = newCard.getElementsByTagName("input")[0];
   radio.setAttribute("id","card_movement_source_" + cardId + "-in-" + pile);
-  radio.setAttribute("type", "radio");
   radio.setAttribute("value", cardId + "-in-" + pile);
-  radio.setAttribute("name", "card_movement[source]");
   radio.hidden = true;
 
-  let label = document.createElement("label");
+  const label = newCard.getElementsByTagName("label")[0];
   label.setAttribute("for", radio.getAttribute("id"));
-  label.setAttribute("class", "card__details");
-  label.appendChild(document.createTextNode("Unknown card"));
+  label.innerHTML = "Unknown card";
 
-  li.appendChild(radio);
-  li.appendChild(label);
-
-  return li;
+  return newCard;
 }
 
 function buildCardElement(card, pile) {
-  // <li class="card card__<%= card.type %>"" id="<%= card.id %>" draggable="true">
-  //   <%= form.radio_button :source, "#{card.id}-in-#{pile}" %>
-  //   <%= form.label :source, value: "#{card.id}-in-#{pile}", class: "card__details" do %>
-  //     <span class="card__name"><%= card.name %></span>
-  //     <span class="card__image"><img src="https://placekitten.com/175/175"></span>
-  //     <span class="card__type" title="<%= card.type %>"></span>
-  //     <span class="card__charge"><%= card.charge %></span>
-  //     <span class="card__ability"><%= card.ability %></span>
-  //   <% end %>
-  // </li>
+  const cardTemplate = document.getElementById("template-card");
+  const newCard = cardTemplate.content.firstElementChild.cloneNode(true);
 
-  let li = document.createElement("li");
-  li.setAttribute("class", "card card__" + card.type);
-  li.setAttribute("id", card.id);
-  li.setAttribute("draggable", "true")
+  newCard.setAttribute("class", "card card__" + card.type);
+  newCard.setAttribute("id", card.id);
 
-  let radio = document.createElement("input");
+  const radio = newCard.getElementsByTagName("input")[0];
   radio.setAttribute("id","card_movement_source_" + card.id + "-in-" + pile);
-  radio.setAttribute("type", "radio");
   radio.setAttribute("value", card.id + "-in-" + pile);
-  radio.setAttribute("name", "card_movement[source]");
   radio.hidden = true;
 
-  let label = document.createElement("label");
+  const label = newCard.getElementsByTagName("label")[0];
   label.setAttribute("for", radio.getAttribute("id"));
-  label.setAttribute("class", "card__details");
 
-  let cardName = document.createElement("span");
-  cardName.setAttribute("class", "card__name");
-  cardName.appendChild(document.createTextNode(card.name));
+  const cardName = newCard.getElementsByClassName("card__name")[0];
+  cardName.innerHTML = card.name;
 
-  let image = document.createElement("img");
-  image.setAttribute("src", "https://placekitten.com/175/175");
-  image.setAttribute("draggable", false);
-
-  let cardImage = document.createElement("span");
-  cardImage.setAttribute("class", "card__image");
-  cardImage.appendChild(image);
-
-  let cardType = document.createElement("span");
-  cardType.setAttribute("class", "card__type");
+  const cardType = newCard.getElementsByClassName("card__type")[0];
   cardType.setAttribute("title", card.type);
 
-  let cardCharge = document.createElement("span");
-  cardCharge.setAttribute("class", "card__charge");
-  cardCharge.appendChild(document.createTextNode(card.charge));
+  const cardCharge = newCard.getElementsByClassName("card__charge")[0];
+  cardCharge.innerHTML = card.charge;
 
-  let cardAbility = document.createElement("span");
-  cardAbility.setAttribute("class", "card__ability");
-  cardAbility.appendChild(document.createTextNode(card.ability));
+  const cardAbility = newCard.getElementsByClassName("card__ability")[0];
+  cardAbility.innerHTML = card.ability;
 
-  label.appendChild(cardName);
-  label.appendChild(cardImage);
-  label.appendChild(cardType);
-  label.appendChild(cardCharge);
-  label.appendChild(cardAbility);
-
-  li.appendChild(radio);
-  li.appendChild(label);
-
-  return li;
+  return newCard;
 }
 
 consumer.subscriptions.create("ActionChannel", {
