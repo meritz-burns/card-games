@@ -54,8 +54,6 @@ ul.cards {
 
 .game_form {
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
-  grid-template-rows: 33% 33% auto;
   grid-template-areas:
     "their-hand their-board their-board their-board"
     "discard deck your-hand your-hand"
@@ -138,8 +136,6 @@ ul.cards {
 
 .card__details {
   display: grid;
-  grid-template-columns: 10px auto;
-  grid-template-rows: 10px auto 15% auto;
   grid-template-areas:
     "charge image"
     "type image"
