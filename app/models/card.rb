@@ -4,7 +4,7 @@ class Card < Struct.new(:name, :type, :charge, :ability, :id)
   end
 
   def self.find(id)
-    CARDS[extract_name(id)].tap do |card|
+    CARDS[extract_name(id)].clone.tap do |card|
       card.id = id
     end
   end
