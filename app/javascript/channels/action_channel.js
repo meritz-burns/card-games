@@ -103,7 +103,7 @@ function buildCardElement(card, pile) {
   const cardTemplate = document.getElementById("template-card");
   const newCard = cardTemplate.content.firstElementChild.cloneNode(true);
 
-  newCard.setAttribute("class", "card card__" + card.type);
+  newCard.setAttribute("class", "card card__" + card.owner);
   newCard.setAttribute("id", card.id);
 
   const radio = newCard.getElementsByTagName("input")["card_movement[source]"];
@@ -115,16 +115,16 @@ function buildCardElement(card, pile) {
   label.setAttribute("for", radio.getAttribute("id"));
 
   const cardName = newCard.getElementsByClassName("card__name")[0];
-  cardName.innerHTML = card.name;
+  cardName.innerHTML = card.title;
 
   const cardType = newCard.getElementsByClassName("card__type")[0];
-  cardType.setAttribute("title", card.type);
+  cardType.setAttribute("title", card.owner);
 
   const cardCharge = newCard.getElementsByClassName("card__charge")[0];
-  cardCharge.innerHTML = card.charge;
+  cardCharge.innerHTML = card.ops;
 
   const cardAbility = newCard.getElementsByClassName("card__ability")[0];
-  cardAbility.innerHTML = card.ability;
+  cardAbility.innerHTML = card.text;
 
   return newCard;
 }

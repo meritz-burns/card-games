@@ -1,7 +1,7 @@
 ##
 # A Card-like object that can be rendered.
 class DummyCard
-  def type
+  def owner
     "dummy"
   end
 
@@ -9,15 +9,15 @@ class DummyCard
     "dummy"
   end
 
-  def name
+  def title
     "dummy"
   end
 
-  def charge
+  def ops
     0
   end
 
-  def ability
+  def text
     ""
   end
 

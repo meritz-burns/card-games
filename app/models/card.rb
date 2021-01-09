@@ -1,8 +1,4 @@
 class Card < Struct.new(:title, :owner, :ops, :text, :id, :removed, :ongoing, :stage, :url, :cancels, :antireq, :affects, :allows, :prereq, :related, keyword_init: true)
-  alias_method :name, :title
-  alias_method :type, :owner
-  alias_method :charge, :ops
-  alias_method :ability, :text
 
   def self.names
     CARDS.keys
