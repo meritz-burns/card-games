@@ -1,4 +1,17 @@
-# Cntrl
+# Twilight Struggle
+
+This was a card games simulation for Control. It has now been forked to work as the card management for Twilight Stuggle instead. There is already a open source version of the board at [twistrug.jjt.io](http://twistrug.jjt.io/#/).
+
+This is a work in progress.
+
+## TODO
+
+- [ ] Handle removal of cards
+- [ ] Handle stages (Early, Late, Midwar)
+- [ ] Remove player board
+- [ ] Handle reshuffle
+- [ ] Handle cards in semi-permanant play
+- [ ] Handle dealing
 
 ## Getting Started
 
